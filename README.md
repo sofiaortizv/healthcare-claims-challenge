@@ -85,7 +85,7 @@ Ejercicio utilizando LLMs para consultar y analizar información de reclamacione
 ### 📊 La carpeta: `resources/`
 
 Contiene los notebooks con el código del ejercicio del asistente. 
-- **Notebooks**: Desarrollo del "Ask Claims" assistant
+- **Notebooks**: `ask-claims-assistant.ipynb`
 
 ---
 
