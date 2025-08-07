@@ -1,0 +1,101 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Datos raw del sistema fuente"
+    tables:
+      - name: claims
+        description: "Claims médicos raw"
+      - name: patients
+        description: "Pacientes raw"
+      - name: providers
+        description: "Proveedores médicos raw"
+      - name: claim_providers
+        description: "Relación entre claims y proveedores raw"
+
+models:
+  - name: stg_patients
+    description: "Staging de pacientes con limpieza inicial"
+    columns:
+      - name: patient_id
+        description: "ID único del paciente"
+        tests:
+          - not_null
+          - unique
+      
+      - name: first_name
+        description: "Nombre del paciente"
+        tests:
+          - not_null
+      
+      - name: state
+        description: "Estado del paciente"
+        tests:
+          - not_null
+      
+      - name: email
+        description: "Email del paciente"
+        tests:
+          - not_null
+      
+      - name: gender
+        description: "Género del paciente"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['M', 'F']
+
+  - name: stg_providers
+    description: "Staging de proveedores con limpieza inicial"
+    columns:
+      - name: provider_id
+        description: "ID único del proveedor"
+        tests:
+          - not_null
+          - unique
+      
+      - name: provider_name
+        description: "Nombre del proveedor"
+        tests:
+          - not_null
+      
+      - name: state
+        description: "Estado del proveedor"
+        tests:
+          - not_null
+      
+      - name: email
+        description: "Email del proveedor"
+        tests:
+          - not_null
+
+  - name: stg_claims
+    description: "Staging de claims con limpieza inicial"
+    columns:
+      - name: claim_id
+        description: "ID único del claim"
+        tests:
+          - not_null
+      
+      - name: patient_id
+        description: "ID del paciente"
+        tests:
+          - not_null
+      
+      - name: service_date
+        description: "Fecha del servicio"
+        tests:
+          - not_null
+
+  - name: stg_claim_providers
+    description: "Staging de relación claims-proveedores"
+    columns:
+      - name: claim_id
+        description: "ID del claim"
+        tests:
+          - not_null
+      
+      - name: provider_id
+        description: "ID del proveedor"
+        tests:
+          - not_null

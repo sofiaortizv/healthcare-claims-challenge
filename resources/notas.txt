@@ -1,0 +1,71 @@
+Notas: 
+
+* Activar entorno: 
+
+source env/bin/activate
+
+* Ejecutar comandos: 
+
+
+dbt build --select stg_patients 
+dbt build --select stg_providers
+dbt build --select stg_claims
+dbt build --select stg_claim_providers 
+
+dbt build --select dim_patients
+dbt build --select dim_providers
+dbt build --select fact_claims
+
+dbt build --select dim_patients dim_providers fact_claims
+
+
+* Notebooks 
+
+ jupyter notebook
+
+-------
+
+DER 
+
++-----------------+        +------------------+
+|   patients      |        |   providers      |
+|-----------------|        |------------------|
+| patient_id (PK) |   ---->| provider_id (PK) |
+| first_name      |   |    | provider_name    |
+| last_name       |   |    | provider_type    |
+| ...             |   |    | ...              |
++-----------------+   |    +------------------+
+                      |
+                      |    +------------------------+
+                      |    |   claim_providers      |
+                      |    |------------------------|
+                      +--->| claim_id (PK, FK)      |
+                           | provider_id (PK, FK)   |
+                           | provider_role          |
+                           +------------------------+
+                                      ^
+                                      |
+          +---------------------------+
+          |
++-----------------------------+
+|         claims              |
+|-----------------------------|
+| claim_id (PK)              |
+| patient_id (FK)            |
+| service_date               |
+| billed_amount              |
+| diagnosis_codes (array)    |
+| procedure_codes (array)    |
+| ...                        |
++-----------------------------+
+
+
+----
+
+Comandos para dbt 
+
+dbt docs generate
+
+dbt docs serve
+
+----

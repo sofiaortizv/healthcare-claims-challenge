@@ -1,0 +1,23 @@
+# DBT specific
+sofia_dbt/target/
+sofia_dbt/dbt_packages/
+sofia_dbt/logs/
+sofia_dbt/.user.yml
+
+# Python virtual environment
+env/
+venv/
+__pycache__/
+*.pyc
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local

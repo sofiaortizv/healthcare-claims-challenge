@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: dim_patients
+    description: "Dimensión de pacientes con información personal y del plan de salud"
+    columns:
+      - name: patient_sk
+        description: "Surrogate key del paciente"
+        tests:
+          - not_null
+          - unique
+      
+      - name: patient_bk
+        description: "Business key del paciente (patient_id original)"
+        tests:
+          - not_null
+          - unique
+      
+      - name: first_name
+        description: "Nombre del paciente"
+        tests:
+          - not_null
+      
+      - name: state
+        description: "Estado donde vive el paciente"
+        tests:
+          - not_null
+      
+      - name: email
+        description: "Email del paciente"
+        tests:
+          - not_null
+      
+      - name: gender
+        description: "Género del paciente"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['M', 'F']
+
+  - name: dim_providers
+    description: "Dimensión de proveedores médicos"
+    columns:
+      - name: provider_sk
+        description: "Surrogate key del proveedor"
+        tests:
+          - not_null
+          - unique
+      
+      - name: provider_bk
+        description: "Business key del proveedor (provider_id original)"
+        tests:
+          - not_null
+          - unique
+      
+      - name: provider_name
+        description: "Nombre del proveedor"
+        tests:
+          - not_null
+      
+      - name: state
+        description: "Estado donde está ubicado el proveedor"
+        tests:
+          - not_null
+     
+
+  - name: fact_claims
+    description: "Tabla de hechos de claims médicos"
+    columns:
+      - name: claim_sk
+        description: "Surrogate key del claim"
+        tests:
+          - not_null
+          - unique
+      
+      - name: claim_bk
+        description: "Business key del claim (claim_id original)"
+        tests:
+          - not_null
+      
+      - name: patient_fk
+        description: "Foreign key a dim_patients"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_patients')
+              field: patient_sk
+      
+      - name: provider_fk
+        description: "Foreign key a dim_providers"
+        tests:
+          - relationships:
+              to: ref('dim_providers')
+              field: provider_sk
+      
+      - name: patient_bk
+        description: "Business key del paciente"
+        tests:
+          - not_null
+      
+      - name: service_date
+        description: "Fecha del servicio médico"
+        tests:
+          - not_null
+      
+      - name: billed_amount
+        description: "Monto facturado"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      
+      - name: insurance_coverage_percentage
+        description: "Porcentaje de cobertura del seguro"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: -100
+              max_value: 100
+              inclusive: true 
